@@ -11,10 +11,7 @@ export default function Compensation() {
         <p className="mx-auto mt-6 max-w-2xl text-center text-base text-black/70">{payout.intro}</p>
 
         <div className="card mx-auto mt-14 max-w-3xl border-orange bg-orange p-8 md:p-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-black/60">
-            {payout.offerBadge}
-          </span>
-          <h3 className="mt-3 text-2xl font-black uppercase leading-tight md:text-4xl">
+          <h3 className="text-2xl font-black uppercase leading-tight md:text-4xl">
             {payout.offerTitle}
           </h3>
           <p className="mt-4 text-sm leading-relaxed text-black/80 md:text-base">{payout.offerBody}</p>
@@ -40,20 +37,49 @@ export default function Compensation() {
             </div>
           </div>
 
+          <div className="mt-8 rounded-2xl border border-black bg-cream p-6 md:p-8">
+            <p className="text-center text-[10px] font-bold uppercase tracking-wider text-black/50">
+              {payout.exampleBreakdownHeading}
+            </p>
+            <ol className="mt-6 space-y-4">
+              {payout.exampleBreakdownSteps.map((step, index) => (
+                <li key={`${step}-${index}`} className="flex gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange text-sm font-black text-white">
+                    {index + 1}
+                  </span>
+                  <p
+                    className={`pt-1 text-sm leading-relaxed ${
+                      index === payout.exampleBreakdownSteps.length - 1
+                        ? 'font-bold text-black'
+                        : 'text-black/80'
+                    }`}
+                  >
+                    {step}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
           <p className="mt-6 text-center text-xs leading-relaxed text-black/60">
             {payout.qualifyingNote}
           </p>
         </div>
 
-        <div className="card mx-auto mt-12 max-w-3xl p-8">
-          <h3 className="text-lg font-extrabold uppercase tracking-tight">{payout.includedHeading}</h3>
-          <ul className="mt-6 space-y-3">
+        <div className="card mt-12 border-orange bg-orange p-8 md:p-12">
+          <h3 className="text-2xl font-black uppercase leading-tight tracking-tight md:text-4xl">
+            {payout.includedHeading}
+          </h3>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {payout.includedItems.map((item, index) => (
-              <li key={`${item}-${index}`} className="flex gap-3 text-sm leading-relaxed text-black/80">
+              <li
+                key={`${item}-${index}`}
+                className="flex gap-3 rounded-2xl border border-black bg-cream p-5 text-sm font-medium leading-relaxed text-black/90"
+              >
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-black bg-orange text-xs font-black">
                   ✓
                 </span>
-                {item}
+                <span>{item}</span>
               </li>
             ))}
           </ul>

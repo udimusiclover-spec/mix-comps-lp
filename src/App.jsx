@@ -14,8 +14,8 @@ import { useLabels } from './context/LabelsContext'
 const sectionConfig = [
   { id: 'overview', labelKey: 'overview', Component: Hero },
   { id: 'how-it-works', labelKey: 'howItWorks', Component: HowItWorks },
-  { id: 'payout', labelKey: 'payout', Component: Compensation },
   { id: 'benefits', labelKey: 'benefits', Component: WhatYouGet },
+  { id: 'payout', labelKey: 'payout', Component: Compensation },
   { id: 'rights', labelKey: 'rights', Component: RightsSafety },
   { id: 'faq', labelKey: 'faq', Component: FAQ },
   { id: 'apply', labelKey: 'apply', Component: ApplicationForm },

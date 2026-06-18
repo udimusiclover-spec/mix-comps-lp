@@ -1,18 +1,19 @@
+import { useEffect, useState } from 'react'
 import { flattenLabels } from '../labels/defaultLabels'
 import { useLabels } from '../context/LabelsContext'
 
-const GROUP_LABELS = {
-  header: 'Header',
-  nav: 'Navigation',
-  hero: 'Overview / Hero',
-  benefits: 'What you get',
-  howItWorks: 'How it works',
-  payout: 'Payout',
-  rights: 'Rights',
-  faq: 'FAQ',
-  apply: 'Apply form',
-  footer: 'Footer',
-}
+const ADMIN_SECTIONS = [
+  { id: 'header', label: 'Header' },
+  { id: 'nav', label: 'Navigation' },
+  { id: 'hero', label: 'Overview' },
+  { id: 'howItWorks', label: 'How it works' },
+  { id: 'benefits', label: 'What you get' },
+  { id: 'payout', label: 'Payout' },
+  { id: 'rights', label: 'Rights' },
+  { id: 'faq', label: 'FAQ' },
+  { id: 'apply', label: 'Apply form' },
+  { id: 'footer', label: 'Footer' },
+]
 
 function pathKey(path) {
   return path.join('.')
@@ -49,78 +50,113 @@ function FieldEditor({ entry, value, onChange }) {
 export default function AdminDashboard() {
   const { adminOpen, draft, setAdminOpen, updateDraft, saveDraft, resetDraft, resetAndSave } =
     useLabels()
+  const [activeSection, setActiveSection] = useState('header')
+
+  useEffect(() => {
+    if (!adminOpen) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [adminOpen])
+
+  useEffect(() => {
+    if (adminOpen) {
+      setActiveSection('header')
+    }
+  }, [adminOpen])
 
   if (!adminOpen) return null
 
   const entries = flattenLabels(draft)
-  const groups = [...new Set(entries.map((entry) => entry.group))]
+  const sectionEntries = entries.filter((entry) => entry.group === activeSection)
+  const activeMeta = ADMIN_SECTIONS.find((section) => section.id === activeSection)
+
+  const handleSectionChange = (id) => {
+    setActiveSection(id)
+  }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-4 sm:items-center">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Label admin dashboard"
-        className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-black bg-cream shadow-2xl"
-      >
-        <div className="flex items-center justify-between border-b border-black px-6 py-4">
+    <div className="fixed inset-0 z-[100] flex h-dvh flex-col overflow-hidden bg-cream">
+      <header className="shrink-0 border-b border-black bg-cream">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-8">
           <div>
-            <h2 className="text-lg font-black uppercase tracking-tight">Label editor</h2>
-            <p className="mt-1 text-xs text-black/60">
-              Cmd+Shift+A to toggle · Changes save to this browser
-            </p>
+            <h1 className="text-lg font-black uppercase tracking-tight md:text-xl">Admin settings</h1>
+            <p className="mt-1 text-xs text-black/60">Cmd+Shift+A to close · Saved to this browser</p>
           </div>
           <button
             type="button"
             onClick={() => setAdminOpen(false)}
-            className="rounded-full border border-black px-4 py-1.5 text-xs font-extrabold uppercase"
+            className="btn-secondary shrink-0 text-xs"
           >
-            Close
+            Back to site
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          <div className="space-y-8">
-            {groups.map((group) => {
-              const groupEntries = entries.filter((entry) => entry.group === group)
+        <nav
+          className="mx-auto flex max-w-7xl gap-2 overflow-x-auto border-t border-black px-4 py-3 md:px-8"
+          aria-label="Admin sections"
+        >
+          {ADMIN_SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => handleSectionChange(section.id)}
+              aria-current={activeSection === section.id ? 'page' : undefined}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-extrabold uppercase tracking-wide transition-colors ${
+                activeSection === section.id
+                  ? 'bg-orange text-black'
+                  : 'text-black/70 hover:bg-cream-dark hover:text-black'
+              }`}
+            >
+              {section.label}
+            </button>
+          ))}
+        </nav>
+      </header>
 
-              return (
-                <section key={group}>
-                  <h3 className="mb-4 text-sm font-extrabold uppercase tracking-wide">
-                    {GROUP_LABELS[group] ?? group}
-                  </h3>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {groupEntries.map((entry) => (
-                      <FieldEditor
-                        key={pathKey(entry.path)}
-                        entry={entry}
-                        value={entry.value}
-                        onChange={updateDraft}
-                      />
-                    ))}
-                  </div>
-                </section>
-              )
-            })}
+      <main className="min-h-0 flex-1 overflow-y-auto">
+        <div className="mx-auto w-full max-w-5xl px-4 py-8 md:px-8">
+        <h2 className="text-2xl font-black uppercase tracking-tight">{activeMeta?.label}</h2>
+        <p className="mt-2 text-sm text-black/60">
+          Edit labels for this section. Changes apply after you save.
+        </p>
+
+        <div className="card mt-8 p-6 md:p-8">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {sectionEntries.map((entry) => (
+              <FieldEditor
+                key={pathKey(entry.path)}
+                entry={entry}
+                value={entry.value}
+                onChange={updateDraft}
+              />
+            ))}
           </div>
         </div>
+        </div>
+      </main>
 
-        <div className="flex flex-wrap gap-3 border-t border-black px-6 py-4">
+      <footer className="shrink-0 border-t border-black bg-cream">
+        <div className="mx-auto flex max-w-7xl flex-wrap gap-3 px-4 py-4 md:px-8">
           <button type="button" onClick={saveDraft} className="btn-primary text-xs">
             Save changes
           </button>
           <button type="button" onClick={resetDraft} className="btn-secondary text-xs">
-            Reset draft
+            Reset section draft
           </button>
           <button
             type="button"
             onClick={resetAndSave}
             className="rounded-full border border-black px-5 py-2.5 text-xs font-extrabold uppercase"
           >
-            Restore defaults
+            Restore all defaults
           </button>
         </div>
-      </div>
+      </footer>
     </div>
   )
 }

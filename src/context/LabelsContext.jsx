@@ -40,7 +40,6 @@ export function LabelsProvider({ children }) {
   const saveDraft = useCallback(() => {
     setLabels(deepClone(draft))
     localStorage.setItem(STORAGE_KEY, JSON.stringify(draft))
-    setAdminOpen(false)
   }, [draft])
 
   const resetDraft = useCallback(() => {
@@ -53,7 +52,6 @@ export function LabelsProvider({ children }) {
     setDraft(defaults)
     setLabels(defaults)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults))
-    setAdminOpen(false)
   }, [])
 
   const value = useMemo(

@@ -105,15 +105,21 @@ export const defaultLabels = {
     intro:
       'Every accepted track gets the same core offer. When we contact you, we share your specific numbers — threshold, rate, and timeline — before anything goes live.',
     offerBadge: 'Standard artist offer',
-    offerTitle: 'Performance bonus on every campaign',
+    offerTitle: 'Performance bonus',
     offerBody:
       'Once your campaign hits an agreed minimum number of qualifying mixes, you earn a fixed amount for each one after that. No tiers, no guessing — your rate is confirmed upfront when your track is accepted.',
     thresholdLabel: 'Example threshold',
-    thresholdValue: '200 mixes',
+    thresholdValue: '50 mixes',
     rateLabel: 'Example rate',
     rateValue: '$2 / mix',
     payoutLabel: 'Example payout',
-    payoutValue: '$600 at 300',
+    payoutValue: '$500 at 300',
+    exampleBreakdownHeading: 'How the example adds up',
+    exampleBreakdownSteps: [
+      'Your campaign reaches 300 qualifying mixes in total.',
+      'The first 50 mixes unlock the bonus — they are not paid.',
+      'Each of the remaining 250 mixes pays $2 → 250 × $2 = $500 bonus.',
+    ],
     qualifyingNote:
       'A qualifying mix means a registered participant downloaded your stems, submitted a completed mix, and passed basic eligibility checks.',
     includedHeading: 'Included for every accepted track',

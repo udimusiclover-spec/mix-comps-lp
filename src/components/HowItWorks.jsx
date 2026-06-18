@@ -1,6 +1,6 @@
 import { useLabels } from '../context/LabelsContext'
 
-export default function HowItWorks({ onNavigate }) {
+export default function HowItWorks() {
   const { labels } = useLabels()
   const { howItWorks } = labels
 
@@ -12,28 +12,23 @@ export default function HowItWorks({ onNavigate }) {
           {howItWorks.intro}
         </p>
 
-        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {howItWorks.steps.map((step, index) => (
-            <article key={`${step.title}-${index}`} className="text-center md:text-left">
-              <span className="text-4xl font-black md:text-5xl">
+            <article
+              key={`${step.title}-${index}`}
+              className="card flex flex-col p-6 transition-colors hover:bg-cream-dark md:p-8"
+            >
+              <span className="text-3xl font-black md:text-4xl">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <h3 className="mt-3 text-lg font-extrabold uppercase tracking-tight">
+              <h3 className="mt-4 text-lg font-extrabold uppercase leading-tight tracking-tight">
                 {step.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-black/70">{step.description}</p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-black/70">
+                {step.description}
+              </p>
             </article>
           ))}
-        </div>
-
-        <div className="card mx-auto mt-16 max-w-3xl border-orange bg-orange p-8 text-center md:p-12">
-          <h3 className="text-2xl font-black uppercase tracking-tight md:text-4xl">
-            {howItWorks.ctaHeading}
-          </h3>
-          <p className="mt-4 text-sm text-black/80 md:text-base">{howItWorks.ctaBody}</p>
-          <button type="button" onClick={() => onNavigate?.('apply')} className="btn-secondary mt-8 inline-flex bg-cream">
-            {howItWorks.ctaButton}
-          </button>
         </div>
       </div>
     </section>
