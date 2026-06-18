@@ -34,4 +34,13 @@
   .card {
     @apply rounded-3xl border border-black bg-cream;
   }
+
+  .nav-scroll {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
 }

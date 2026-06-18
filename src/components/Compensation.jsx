@@ -16,7 +16,7 @@ export default function Compensation() {
           </h3>
           <p className="mt-4 text-sm leading-relaxed text-black/80 md:text-base">{payout.offerBody}</p>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             <div className="rounded-2xl border border-black bg-cream p-5 text-center">
               <p className="text-[10px] font-bold uppercase tracking-wider text-black/50">
                 {payout.thresholdLabel}
